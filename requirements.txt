@@ -1,0 +1,5 @@
+flask
+requests
+pandas
+gunicorn
+python-dotenv

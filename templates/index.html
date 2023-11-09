@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommender</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #3498db, #9b59b6) no-repeat center center fixed;
+            /* background-size:auto; */
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            text-align: center;
+            padding: 100px;
+        }
+        #movie-name {
+            width: 300px;
+            padding: 10px;
+            border: none;
+            font-size: 18px;
+            margin: 10px;
+        }
+        #submit-button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        #movie-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .movie-card {
+            margin: 10px;
+        }
+        .movie-card img {
+            max-width: 200px;
+            max-height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Movie Recommender</h1>
+        <form id="movie-form" action="/recommend_movies" method="POST">
+            <input list="options"type="text" id="movie-name" name="movie_name" placeholder="Enter a movie name">
+                <datalist id="options">
+                    {% for i in movies %}
+                    <option>{{i}}</option>
+                    {% endfor %}
+                </datalist>
+            <br>
+            <button id="submit-button" type="submit">Submit</button>
+        </form>
+        <div id="movie-list">
+            Movie recommendations will be displayed here
+        </div>
+    </div>
+
+    <!-- JavaScript code to handle form submission and display movie recommendations -->
+    <script>
+        const movieForm = document.getElementById("movie-form");
+        const movieList = document.getElementById("movie-list");
+
+        movieForm.addEventListener("submit", (event) => {
+            event.preventDefault(); // Prevent the form from being submitted in the traditional way
+
+            // Send a POST request to the Flask route to get movie recommendations
+            fetch('/recommend_movies', {
+                method: 'POST',
+                body: new FormData(movieForm),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Clear the previous recommendations
+                movieList.innerHTML = '';
+
+                // Display the movie recommendations and images
+                data.movies.forEach(movie => {
+                    const movieCard = document.createElement("div");
+                    movieCard.className = "movie-card";
+                    const movieImage = document.createElement("img");
+                    movieImage.src = movie.image;
+                    const movieName = document.createElement("p");
+                    movieName.textContent = movie.name;
+                    movieCard.appendChild(movieImage);
+                    movieCard.appendChild(movieName);
+                    movieList.appendChild(movieCard);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html> 
