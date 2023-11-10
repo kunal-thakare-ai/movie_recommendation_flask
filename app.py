@@ -12,36 +12,44 @@ app = Flask(__name__)
 data = pickle.load(open("data.pkl", "rb"))
 
 api_key = os.environ.get("TMDB_KEY")
-print(api_key)
 
-similarities = pickle.load(open('similarities.pkl', 'rb'))
 data = pd.DataFrame(data)
 
 movies = data["title"]
 
+# similarities = pickle.load(open('similarities.pkl', 'rb'))
+similiarities_dict = pickle.load(open('similarities_dict.pkl', 'rb'))
+
 def fetch_poster(movie_id):
     url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={api_key}"
-    data = requests.get(url)
-    data = data.json()
-    poster_path = data['poster_path']
+    res = requests.get(url)
+    res = res.json()
+    poster_path = res['poster_path']
     full_path = "https://image.tmdb.org/t/p/w500/" + poster_path
     return full_path
 
 def get_movies(movie_name):
-    movie_index = data[data["title"] == movie_name].index[0]
-    rec = sorted(list(enumerate(similarities[movie_index])), reverse = True, key = lambda x: x[1])[1:6]
-    ls = []
+    # movie_index = data[data["title"] == movie_name].index[0]
+    # rec = sorted(list(enumerate(similarities[movie_index])), reverse = True, key = lambda x: x[1])[1:6]
+    # ls = []
+    # path_ls = []
+    # for i in rec:
+    #     ls.append(data.iloc[i[0]]["title"])
+    # for i in rec:
+    #     path_ = fetch_poster(data.iloc[i[0]]['id'])
+    #     path_ls.append(path_)
+    # return ls, path_ls
+    res = similiarities_dict[movie_name]
+    names, id_ = res['title'], res["id"]
     path_ls = []
-    for i in rec:
-        ls.append(data.iloc[i[0]]["title"])
-    for i in rec:
-        path_ = fetch_poster(data.iloc[i[0]]['id'])
+    for i in id_: 
+        path_ = fetch_poster(i)
         path_ls.append(path_)
-    return ls, path_ls
+    return names, path_ls
+
 
 @app.route('/')
 def index():
-    print(os.environ.get("TMDB_KEY"))
     return render_template(
     'index.html',
        movies = movies)
