@@ -1,5 +1,5 @@
 # Movies Recommendation Project
-[live demo]("https://movies-recommendation-5hiv.onrender.com")
+[live demo](https://movies-recommendation-5hiv.onrender.com)
 ## Overview
 
 This project is a movie recommendation system built using the TMDb (The Movie Database) dataset. The recommendation system employs a similarity matrix created using the bag of words technique, calculating cosine similarities between pairs of movies.
