@@ -27,8 +27,8 @@ This project is a movie recommendation system built using the TMDb (The Movie Da
 
 ### Installation
 
-1. Clone the repository: `git clone https://github.com/your-username/movies-recommendation-project.git`
-2. Navigate to the project directory: `cd movies-recommendation-project`
+1. Clone the repository: `git clone https://github.com/kunal-thakare-ai/movie_recommendation_flask.git`
+2. Navigate to the project directory: `cd movie_recommendation_flask`
 3. Install dependencies: `pip install -r requirements.txt`
 4. Build the Docker image: `docker build -t movies-recommendation .`
 
@@ -38,6 +38,8 @@ This project is a movie recommendation system built using the TMDb (The Movie Da
 2. Access the application in your web browser at `http://localhost:5000`
 
 ## Additional Notes
+
+Actual similarities matrix is not uploaded because of the large size, Instead top 5 picks for each movies are generated as dictionary.
 
 Feel free to contribute or suggest improvements to enhance the functionality and user experience of the movie recommendation system.
 
